@@ -1,8 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/index.js',
     mode: 'development',
+    entry: {
+        index: './src/index.js',
+        // vendor: ['react', 'react-dom']
+    },
     module: {
         rules: [
             {
@@ -20,7 +25,23 @@ module.exports = {
             }
         ]
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: './src/index.html'
-    })]
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html'
+        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor'
+        // }),
+    ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                }
+            }
+        }
+    }
 };
