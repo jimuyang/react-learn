@@ -1,5 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -7,6 +8,10 @@ module.exports = {
     entry: {
         index: './src/index.js',
         // vendor: ['react', 'react-dom']
+    },
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist')
     },
     module: {
         rules: [
@@ -25,13 +30,15 @@ module.exports = {
             }
         ]
     },
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist'
+    },
     plugins: [
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/index.html'
+            template: 'index.html'
         }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor'
-        // }),
     ],
     optimization: {
         splitChunks: {
