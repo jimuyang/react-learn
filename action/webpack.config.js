@@ -20,19 +20,31 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-react'
-                        ]
-                    }
                 }
-            }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    { loader: 'style-loader' },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            import: true,
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                        },
+                    }
+                ],
+
+            },
         ]
     },
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',
+        publicPath: '/',
+        historyApiFallback: true,
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -42,13 +54,14 @@ module.exports = {
     ],
     optimization: {
         splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-                    name: 'vendor',
-                    chunks: 'all',
-                }
-            }
+            chunks: 'all'
+            // cacheGroups: {
+            //     vendor: {
+            //         test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            //         name: 'vendor',
+            //         chunks: 'all',
+            //     }
+            // }
         }
     }
 };
