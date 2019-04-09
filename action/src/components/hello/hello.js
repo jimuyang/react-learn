@@ -1,7 +1,7 @@
 import React from 'react';
 import outStyle from './hello.css';
 
-console.log(outStyle);
+// console.log(outStyle);
 
 const style = {
     h1: {
@@ -14,9 +14,10 @@ const style = {
  */
 export default class Hello extends React.Component {
     render() {
+        // console.log(this.props);
         return (
-            <header>
-                <h1 style={style.h1}>Hello, {this.props.name}</h1>
+            <header className={outStyle.hellocss}>
+                <h1 style={style.h1}>Hello, {this.props.match.params.name}</h1>
             </header>
         );
     }

@@ -6,16 +6,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Loadable from 'react-loadable';
 
-function App() {
-    return (
-        <div>
-            <Hello name="Jimu" />
-            <Bye name="Jimu" />
-        </div>
-    );
-}
-const Loading = () => <div>Loading...</div>;
-
 const Hello = Loadable({
     loader: () => import(/* webpackChunkName: "hello" */'./components/hello/hello'),
     loading: Loading,
@@ -25,25 +15,34 @@ const Bye = Loadable({
     loader: () => import(/* webpackChunkName: "bye" */'./components/bye/bye'),
     loading: Loading,
 })
+const Loading = () => <div>Loading...</div>;
 
+function App() {
+    return (
+        <div>
+            <Hello name="Jimu" />
+            <Bye name="Jimu" />
+        </div>
+    );
+}
 
 function AppRouter() {
     return (
         <Router>
             <div>
-                {/* <nav>
+                <nav>
                     <ul>
                         <li>
-                            <Link to="/">Hello</Link>
+                            <Link to="/hello/muyi">Hello</Link>
                         </li>
                         <li>
                             <Link to="/byebye">Byebye</Link>
                         </li>
 
                     </ul>
-                </nav> */}
+                </nav>
 
-                <Route path="/" exact component={Hello} />
+                <Route path="/hello/:name" exact component={Hello} />
                 <Route path="/byebye" component={Bye} />
             </div>
         </Router>
