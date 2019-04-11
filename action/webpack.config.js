@@ -6,7 +6,7 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development',
     entry: {
-        index: './src/index.js',
+        index: path.resolve(__dirname, 'src/index.js'),
         // vendor: ['react', 'react-dom']
     },
     output: {
@@ -44,9 +44,9 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
-        publicPath: '/',
+        publicPath: '/', // 和output publicPath一致
         historyApiFallback: true,
-        noInfo: true
+        // noInfo: true
     },
     plugins: [
         new CleanWebpackPlugin(),
