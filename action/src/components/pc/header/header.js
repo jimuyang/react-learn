@@ -1,27 +1,22 @@
 import React from 'react'
 import { Row, Col } from 'antd';
 
+import IconFont from '@/iconfont'
+import style from './header.css'
+
+// console.log(style)
+
 export default class PcHeader extends React.Component {
     render() {
         return (
             <div>
                 <Row>
-                    <Col span={12}>col-12</Col>
-                    <Col span={12}>col-12</Col>
-                </Row>
-                <Row>
-                    <Col span={8}>col-8</Col>
-                    <Col span={8}>col-8</Col>
-                    <Col span={8}>col-8</Col>
-                </Row>
-                <Row>
-                    <Col span={6}>col-6</Col>
-                    <Col span={6}>col-6</Col>
-                    <Col span={6}>col-6</Col>
-                    <Col span={6}>col-6</Col>
+                    <Col span={2}></Col>
+                    <Col span={4}><IconFont type="iconnews1" className={style['main-icon']} /></Col>
+                    <Col span={2}></Col>
                 </Row>
             </div>
-        )
+        );
     }
 }
 

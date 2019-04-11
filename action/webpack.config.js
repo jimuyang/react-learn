@@ -14,6 +14,11 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
     },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+        }
+    },
     module: {
         rules: [
             {
@@ -25,6 +30,9 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                exclude: [
+                    path.resolve(__dirname, './node_modules'),
+                ],
                 use: [
                     { loader: 'style-loader' },
                     {
@@ -37,7 +45,15 @@ module.exports = {
                         },
                     }
                 ],
-
+            },
+            // node_modules里的css不能设置modules:true
+            // modules中的包自带基础样式，不需要样式模块化引入js文件，否则class名会被编译加上hash前缀，导致样式匹配无法匹配
+            {
+                test: /\.css$/,
+                include: [
+                    path.resolve(__dirname, './node_modules'),
+                ],
+                use: ['style-loader', 'css-loader'],
             },
         ]
     },
