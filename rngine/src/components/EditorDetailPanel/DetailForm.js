@@ -18,7 +18,6 @@ const inlineFormItemLayout = {
 class DetailForm extends React.Component {
   get item() {
     const { propsAPI } = this.props;
-
     return propsAPI.getSelected()[0];
   }
 
@@ -30,8 +29,10 @@ class DetailForm extends React.Component {
     const { form, propsAPI } = this.props;
     const { getSelected, executeCommand, update } = propsAPI;
 
+    
     setTimeout(() => {
       form.validateFieldsAndScroll((err, values) => {
+        debugger
         if (err) {
           return;
         }
@@ -64,7 +65,7 @@ class DetailForm extends React.Component {
   renderNodeDetail = () => {
     const { form } = this.props;
     const { label } = this.item.getModel();
-    console.log(this.props);
+    // debugger
 
     return (
       <Item label="Label" {...inlineFormItemLayout}>
