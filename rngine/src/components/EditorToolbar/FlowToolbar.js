@@ -7,7 +7,7 @@ import styles from './index.less';
 
 const FlowToolbar = () => {
   return (
-    <div>
+    <div style={{display: "flex", alignItems: "center"}}>
       <Toolbar className={styles.toolbar}>
         <ToolbarButton command="undo" />
         <ToolbarButton command="redo" />
