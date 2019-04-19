@@ -29,10 +29,10 @@ class DetailForm extends React.Component {
     const { form, propsAPI } = this.props;
     const { getSelected, executeCommand, update } = propsAPI;
 
-    
+
     setTimeout(() => {
       form.validateFieldsAndScroll((err, values) => {
-        debugger
+        // debugger
         if (err) {
           return;
         }
@@ -64,16 +64,43 @@ class DetailForm extends React.Component {
 
   renderNodeDetail = () => {
     const { form } = this.props;
-    const { label } = this.item.getModel();
+    const { label, category } = this.item.getModel();
     // debugger
 
-    return (
-      <Item label="Label" {...inlineFormItemLayout}>
-        {form.getFieldDecorator('label', {
-          initialValue: label,
-        })(<Input onBlur={this.handleSubmit} />)}
-      </Item>
-    );
+    let renderDecisionNodeDetail = () => {
+      return (
+        <div>
+          <Item label="Label" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+          <Item label="表达式" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('expression', {
+              initialValue: '',
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
+    }
+    let renderNormalNodeDetail = () => {
+      return (
+        <div>
+          <Item label="Label" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
+    }
+
+    switch (category) {
+      case 'decision':
+        return renderDecisionNodeDetail();
+      default:
+        return renderNormalNodeDetail();
+    }
   };
 
   renderEdgeDetail = () => {
@@ -111,6 +138,7 @@ class DetailForm extends React.Component {
 
   render() {
     const { type } = this.props;
+    console.log(this.props);
 
     if (!this.item) {
       return null;
