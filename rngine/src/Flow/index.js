@@ -7,6 +7,7 @@ import { FlowToolbar } from '../components/EditorToolbar';
 import { FlowItemPanel } from '../components/EditorItemPanel';
 import { FlowDetailPanel } from '../components/EditorDetailPanel';
 import styles from './index.less';
+import flowData from '../mock/flowData.json';
 
 const FlowPage = () => {
   return (
@@ -21,7 +22,7 @@ const FlowPage = () => {
           <FlowItemPanel />
         </Col>
         <Col span={16} className={styles.editorContent}>
-          <Flow className={styles.flow} />
+          <Flow className={styles.flow} data={flowData} />
         </Col>
         <Col span={4} className={styles.editorSidebar}>
           <FlowDetailPanel />

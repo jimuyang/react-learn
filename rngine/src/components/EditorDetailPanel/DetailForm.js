@@ -64,20 +64,25 @@ class DetailForm extends React.Component {
 
   renderNodeDetail = () => {
     const { form } = this.props;
-    const { label, category } = this.item.getModel();
+    const model = this.item.getModel();
     // debugger
+    console.log(model);
 
     let renderDecisionNodeDetail = () => {
+      // console.log(...form.getFieldDecorator('expression', {
+      //   initialValue: model.expression,
+      // }));
+
       return (
         <div>
           <Item label="Label" {...inlineFormItemLayout}>
             {form.getFieldDecorator('label', {
-              initialValue: label,
+              initialValue: model.label,
             })(<Input onBlur={this.handleSubmit} />)}
           </Item>
-          <Item label="表达式" {...inlineFormItemLayout}>
+          <Item label="Expression" {...inlineFormItemLayout}>
             {form.getFieldDecorator('expression', {
-              initialValue: '',
+              initialValue: model.expression,
             })(<Input onBlur={this.handleSubmit} />)}
           </Item>
         </div>
@@ -88,16 +93,55 @@ class DetailForm extends React.Component {
         <div>
           <Item label="Label" {...inlineFormItemLayout}>
             {form.getFieldDecorator('label', {
-              initialValue: label,
+              initialValue: model.label,
             })(<Input onBlur={this.handleSubmit} />)}
           </Item>
         </div>
       );
     }
 
-    switch (category) {
+    let renderStartNodeDetail = () => {
+      const { TextArea } = Input;
+      return (
+        <div>
+          <Item label="Label" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: model.label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+          <Item label="Input" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('input', {
+              initialValue: model.input,
+            })(<TextArea rows={6} onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
+    }
+
+    let renderOutputNodeDetail = () => {
+      return (
+        <div>
+          <Item label="Label" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: model.label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+          <Item label="Output" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('output', {
+              initialValue: model.output,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
+    }
+
+    switch (model.category) {
       case 'decision':
         return renderDecisionNodeDetail();
+      case 'start':
+        return renderStartNodeDetail();
+      case 'output':
+        return renderOutputNodeDetail();
       default:
         return renderNormalNodeDetail();
     }
@@ -138,7 +182,7 @@ class DetailForm extends React.Component {
 
   render() {
     const { type } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
 
     if (!this.item) {
       return null;
