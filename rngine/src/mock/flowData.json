@@ -1,0 +1,26 @@
+{
+    "nodes": [
+      {
+        "type": "node", "size": "72*72", "shape": "flow-circle", "color": "#FA8C16", "x": 368.015625, "y": 133, "id": "1b3d571a", "index": 0,
+        "label": "Start", "category": "start", "input": "{'color': 'blue','purple': false,'size': 15,'price': 100,'type': 'T'}"
+      },
+      {
+        "type": "node", "size": "80*72", "shape": "flow-rhombus", "color": "#13C2C2", "x": 371.015625, "y": 274, "id": "492c0cd4", "index": 1,
+        "label": "是红的", "category": "decision", "expression": "input.color === 'red'"
+      },
+      {
+        "type": "node", "size": "80*48", "shape": "flow-capsule", "color": "#722ED1", "label": "Output", "x": 381.015625, "y": 422, "id": "4c86313f", "index": 2,
+        "category": "output", "output": "是红的"
+      },
+      {
+        "type": "node", "size": "80*48", "shape": "flow-capsule", "color": "#722ED1", "label": "Output", "x": 577.015625, "y": 288, "id": "fc44415f", "index": 3,
+        "category": "output", "output": "${input.color}"
+      }
+    ],
+    "edges": [
+      { "source": "1b3d571a", "sourceAnchor": 2, "target": "492c0cd4", "targetAnchor": 0, "id": "91eca75a", "index": 4 },
+      { "source": "492c0cd4", "sourceAnchor": 2, "target": "4c86313f", "targetAnchor": 0, "id": "54f8dd80", "index": 5 },
+      { "source": "492c0cd4", "sourceAnchor": 1, "target": "fc44415f", "targetAnchor": 3, "id": "862abceb", "index": 6 }
+    ]
+  }
+  
