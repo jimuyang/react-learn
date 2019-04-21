@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip } from 'antd';
 import { withPropsAPI } from 'gg-editor';
 import MyIcon from '../../common/IconFont/MyIcon';
-import mockFlowData from '../../mock/flowData.json';
+import { parseRun } from '../../core';
 
 import styles from './index.less';
 
@@ -12,21 +12,9 @@ class SaveButton extends React.Component {
         // console.log(e);
         const { propsAPI } = this.props;
         let data = propsAPI.save();
-        console.log(data);
+        // console.log(data);
         console.log(JSON.stringify(data));
-
-        this.handleFlowData();
-    }
-
-    handleFlowData = (flowData) => {
-        flowData = mockFlowData;
-        const { nodes, edges } = flowData;
-        for (let node of nodes) {
-            console.log(node);
-        }
-        for (let edge of edges) {
-            console.log(edge);
-        }
+        parseRun(data);
     }
 
     render() {

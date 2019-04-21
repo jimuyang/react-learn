@@ -86,7 +86,6 @@ module.exports = {
         publicPath: '/', // 和output publicPath一致
         historyApiFallback: true,
         // noInfo: true
-
         before: function (app, server) {
             app.get('/mock/hello', function (req, resp) {
                 resp.json({ 'msg': 'hello' });

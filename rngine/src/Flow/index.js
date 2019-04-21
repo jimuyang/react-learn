@@ -21,10 +21,10 @@ const FlowPage = () => {
         <Col span={4} className={styles.editorSidebar}>
           <FlowItemPanel />
         </Col>
-        <Col span={16} className={styles.editorContent}>
+        <Col span={12} className={styles.editorContent}>
           <Flow className={styles.flow} data={flowData} />
         </Col>
-        <Col span={4} className={styles.editorSidebar}>
+        <Col span={8} className={styles.editorSidebar}>
           <FlowDetailPanel />
           <EditorMinimap />
         </Col>

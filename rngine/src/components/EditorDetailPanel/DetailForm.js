@@ -8,10 +8,10 @@ const { Option } = Select;
 
 const inlineFormItemLayout = {
   labelCol: {
-    sm: { span: 8 },
+    sm: { span: 6 },
   },
   wrapperCol: {
-    sm: { span: 16 },
+    sm: { span: 18 },
   },
 };
 
@@ -25,26 +25,15 @@ class DetailForm extends React.Component {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
-
     const { form, propsAPI } = this.props;
     const { getSelected, executeCommand, update } = propsAPI;
-
-
     setTimeout(() => {
       form.validateFieldsAndScroll((err, values) => {
-        // debugger
-        if (err) {
+        if (err || !this.item) {
           return;
         }
-
-        const item = getSelected()[0];
-
-        if (!item) {
-          return;
-        }
-
         executeCommand(() => {
-          update(item, {
+          update(this.item, {
             ...values,
           });
         });
@@ -69,10 +58,6 @@ class DetailForm extends React.Component {
     console.log(model);
 
     let renderDecisionNodeDetail = () => {
-      // console.log(...form.getFieldDecorator('expression', {
-      //   initialValue: model.expression,
-      // }));
-
       return (
         <div>
           <Item label="Label" {...inlineFormItemLayout}>
@@ -85,9 +70,15 @@ class DetailForm extends React.Component {
               initialValue: model.expression,
             })(<Input onBlur={this.handleSubmit} />)}
           </Item>
+          <Item label="Judge" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('judge', {
+              initialValue: model.judge,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
         </div>
       );
-    }
+    };
+
     let renderNormalNodeDetail = () => {
       return (
         <div>
@@ -98,7 +89,7 @@ class DetailForm extends React.Component {
           </Item>
         </div>
       );
-    }
+    };
 
     let renderStartNodeDetail = () => {
       const { TextArea } = Input;
@@ -116,7 +107,7 @@ class DetailForm extends React.Component {
           </Item>
         </div>
       );
-    }
+    };
 
     let renderOutputNodeDetail = () => {
       return (
@@ -133,6 +124,40 @@ class DetailForm extends React.Component {
           </Item>
         </div>
       );
+    };
+
+    let renderCommandNodeDetail = () => {
+      return (
+        <div>
+          <Item label="Label" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: model.label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+          <Item label="Command" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('command', {
+              initialValue: model.command,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
+    }
+
+    let renderAliasNodeDetail = () => {
+      return (
+        <div>
+          <Item label="Alias" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('label', {
+              initialValue: model.label,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+          <Item label="For" {...inlineFormItemLayout}>
+            {form.getFieldDecorator('aliasFor', {
+              initialValue: model.aliasFor,
+            })(<Input onBlur={this.handleSubmit} />)}
+          </Item>
+        </div>
+      );
     }
 
     switch (model.category) {
@@ -142,6 +167,10 @@ class DetailForm extends React.Component {
         return renderStartNodeDetail();
       case 'output':
         return renderOutputNodeDetail();
+      case 'command':
+        return renderCommandNodeDetail();
+      case 'alias':
+        return renderAliasNodeDetail();
       default:
         return renderNormalNodeDetail();
     }
@@ -149,8 +178,7 @@ class DetailForm extends React.Component {
 
   renderEdgeDetail = () => {
     const { form } = this.props;
-    const { label = '', shape = 'flow-smooth' } = this.item.getModel();
-
+    const { label = '', shape = 'flow-polyline-round' } = this.item.getModel();
     return (
       <Fragment>
         <Item label="Label" {...inlineFormItemLayout}>
@@ -183,7 +211,6 @@ class DetailForm extends React.Component {
   render() {
     const { type } = this.props;
     // console.log(this.props);
-
     if (!this.item) {
       return null;
     }
