@@ -75,6 +75,7 @@ export const parseRun = (flowData) => {
     console.log(startNode.input);
     // debugger
 
+    // run
     console.log(rule(JSON.parse(startNode.input)));
 }
 
