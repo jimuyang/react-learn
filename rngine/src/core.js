@@ -10,6 +10,86 @@ const trim = (str, char) => {
  */
 export const parseRun = (flowData) => {
     flowData = flowData || mockFlowData;
+
+    const { nodes, edges } = flowData;
+    console.log(nodes);
+    console.log(edges);
+
+    const startNode;
+    for (let node of nodes) {
+        nodeMap[node.id] = node;
+        node.sources = [];
+        node.targets = [];
+        // console.log(node);
+        if (node.category === 'start') {
+            startNode = node;
+        }
+    }
+    for (let edge of edges) {
+        // console.log(edge);
+        sourceNode.targets.push({
+            node: nodeMap[edge.target], targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+        });
+        targetNode.sources.push({
+            node: nodeMap[edge.source], targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+        });
+    }
+    console.log(nodeMap);
+    if (!startNode) {
+        console.log('no start node found!'); 
+        return;
+    }
+
+    let travelNodeMap = (node) => {
+        const { category, stream } = node;
+        let str = '';
+        switch (category) {
+            case 'start':
+                str += 'console.log("start");';
+                break;
+            case 'output':
+                if (node.output.startsWith('"'))
+                    str += `return \`${trim(node.output, '"')}\``;
+                else
+                    str += `return ${node.output}`;
+                break;
+            case 'alias':
+                const aliases = node.aliases || [];
+                console.log(aliases);
+                break;
+            default:
+        }
+        // 处理node的targets
+        node.stream = node.stream || 'true';
+        let defaultTarget = null;
+        for (let target of node.targets) {
+            if (!target.valve) {
+                // 没有阀门限制的target添加到最后
+                defaultTarget = target; 
+                continue;
+            }
+            str += `if (${node.stream} == ${target.valve}) {${travelNodeMap(target.node)}`;
+        }
+        if (defaultTarget) {
+            str += `{${travelNodeMap(defaultTarget.node)}`;
+        }
+        return str;
+    }
+
+    console.log(travelNodeMap(startNode));
+
+    let rule = new Function('input', travelNodeMap(startNode));
+    console.log(startNode.input);
+    // run
+    console.log(rule(JSON.parse(startNode.input)));
+}
+
+/**
+ * 解析执行 将data转化为一个js函数运行
+ * @param {flowData} flowData 
+ */
+export const parseRun1 = (flowData) => {
+    flowData = flowData || mockFlowData;
     const { nodes, edges } = flowData;
 
     let startNode;

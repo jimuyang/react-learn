@@ -131,7 +131,7 @@ class DetailForm extends React.Component {
         </Item>
         <Item label="Stream" {...inlineFormItemLayout}>
           {form.getFieldDecorator('stream', {
-            initialValue: model.stream,
+            initialValue: model.stream || 'true',
           })(<Input onBlur={this.handleSubmit} />)}
         </Item>
       </div>
@@ -156,7 +156,7 @@ class DetailForm extends React.Component {
         <Item label="Input" {...inlineFormItemLayout}>
           {form.getFieldDecorator('input', {
             initialValue: model.input,
-          })(<TextArea rows={6} onBlur={this.handleSubmit} />)}
+          })(<TextArea rows={10} onBlur={this.handleSubmit} />)}
         </Item>
       </div>
     );
@@ -186,11 +186,7 @@ class DetailForm extends React.Component {
     const model = this.item.getModel();
     return (
       <div>
-        <Item label="Label" {...inlineFormItemLayout}>
-          {form.getFieldDecorator('label', {
-            initialValue: model.label,
-          })(<Input onBlur={this.handleSubmit} />)}
-        </Item>
+        {this._renderCommonNodeDetail()}
         <Item label="Command" {...inlineFormItemLayout}>
           {form.getFieldDecorator('command', {
             initialValue: model.command,
@@ -248,6 +244,7 @@ class DetailForm extends React.Component {
 
     return (
       <div>
+        {this._renderCommonNodeDetail()}
         {formItems}
         <Form.Item {...formItemLayoutWithOutLabel}>
           <Button type="dashed" onClick={this._addAlias} style={{ width: '60%' }}>
@@ -262,15 +259,11 @@ class DetailForm extends React.Component {
     const { form } = this.props;
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
-    // We need at least one passenger
-    if (keys.length === 1) {
-      return;
-    }
-
     // can use data-binding to set
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
+    this.handleSubmit();
   }
 
   _addAlias = () => {
@@ -283,6 +276,7 @@ class DetailForm extends React.Component {
     form.setFieldsValue({
       keys: nextKeys,
     });
+    this.handleSubmit();
   }
 
   renderEdgeShapeSelect = () => {
