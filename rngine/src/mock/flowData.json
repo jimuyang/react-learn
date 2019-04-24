@@ -2,16 +2,17 @@
   "nodes": [
     {
       "type": "node",
-      "size": "80*48",
-      "shape": "flow-rect",
-      "color": "#1890FF",
-      "label": "给点钱",
-      "category": "command",
-      "x": 210.015625,
-      "y": 282.39999999999986,
-      "id": "276b4749",
-      "command": "input.amount = 100; input.num = 0;",
-      "index": 7
+      "size": "72*72",
+      "shape": "flow-circle",
+      "color": "#FA8C16",
+      "label": "Start",
+      "category": "start",
+      "x": 112.50000000000004,
+      "y": 66.70000000000029,
+      "id": "c91b5473",
+      "stream": "true",
+      "input": "{\"color\":\"red\", \"price\":\"24\"}",
+      "index": 0
     },
     {
       "type": "node",
@@ -20,38 +21,38 @@
       "color": "#13C2C2",
       "label": "是红的吗？",
       "category": "decision",
-      "x": 210.515625,
-      "y": 383.9,
-      "id": "0a85adf4",
-      "expression": "input.color === 'red'",
-      "judge": "",
-      "index": 8
+      "x": 112.50000000000004,
+      "y": 286.7000000000003,
+      "id": "e1d333fb",
+      "stream": "input.color == 'red'",
+      "index": 1
+    },
+    {
+      "type": "node",
+      "size": "80*48",
+      "shape": "flow-rect",
+      "color": "#1890FF",
+      "label": "给点钱",
+      "category": "command",
+      "x": 112.50000000000004,
+      "y": 162.7000000000003,
+      "id": "5e321250",
+      "stream": "true",
+      "command": "input.amount = 100;",
+      "index": 2
     },
     {
       "type": "node",
       "size": "72*72",
       "shape": "flow-circle",
       "color": "#FA8C16",
-      "label": "不买",
+      "label": "Output",
       "category": "output",
-      "x": 459.59999999999906,
-      "y": 384.4,
-      "id": "cdfe63d1",
-      "output": "\"不是红的 是${input.color}\"",
-      "index": 9
-    },
-    {
-      "type": "node",
-      "size": "72*72",
-      "shape": "flow-circle",
-      "color": "#FA8C16",
-      "label": "买了",
-      "category": "output",
-      "x": 459.09999999999906,
-      "y": 497.0999999999999,
-      "id": "ab8c8e6b",
-      "output": "input",
-      "index": 10
+      "x": 324.80000000000007,
+      "y": 288.90000000000026,
+      "id": "d2d570ed",
+      "stream": "\"不买 颜色是${input.color}\"",
+      "index": 5
     },
     {
       "type": "node",
@@ -60,11 +61,11 @@
       "color": "#13C2C2",
       "label": "买得起吗？",
       "category": "decision",
-      "x": 210.515625,
-      "y": 497.5999999999999,
-      "id": "2b8eae4c",
-      "expression": "input.amount > input.price",
-      "index": 11
+      "x": 112.50000000000001,
+      "y": 428.5000000000003,
+      "id": "f7d83499",
+      "stream": "input.price <= input.amount",
+      "index": 7
     },
     {
       "type": "node",
@@ -73,84 +74,108 @@
       "color": "#1890FF",
       "label": "买一个",
       "category": "command",
-      "x": 210.515625,
-      "y": 605.8,
-      "id": "5b7e9e8d",
-      "command": "input.num++; input.amount-=input.price;",
-      "index": 12
+      "x": 108,
+      "y": 554.7000000000004,
+      "id": "85562ccf",
+      "stream": "true",
+      "command": "input.amount = input.amount - input.price;",
+      "index": 10
     },
     {
       "type": "node",
       "size": "72*72",
       "shape": "flow-circle",
       "color": "#FA8C16",
-      "x": 210.015625,
-      "y": 169.5,
-      "id": "1b3d571a",
-      "index": 13,
-      "label": "Start",
-      "category": "start",
-      "input": "{\"color\": \"blue\",\"purple\": false,\"size\": 15,\"price\": 100,\"type\": \"T\"}"
+      "label": "Output",
+      "category": "output",
+      "x": 112.5,
+      "y": 678.2000000000004,
+      "id": "6d026497",
+      "stream": "input",
+      "index": 11
+    },
+    {
+      "type": "node",
+      "size": "72*72",
+      "shape": "flow-circle",
+      "color": "#FA8C16",
+      "label": "Output",
+      "category": "output",
+      "x": 319.4999999999997,
+      "y": 432.00000000000034,
+      "id": "c6e5e924",
+      "stream": "\"买不起\"",
+      "index": 14
     }
   ],
   "edges": [
     {
-      "source": "0a85adf4",
+      "source": "c91b5473",
       "sourceAnchor": 2,
-      "target": "2b8eae4c",
+      "target": "5e321250",
       "targetAnchor": 0,
-      "id": "09d4f65f",
-      "index": 0
-    },
-    {
-      "source": "276b4749",
-      "sourceAnchor": 2,
-      "target": "0a85adf4",
-      "targetAnchor": 0,
-      "id": "969d6ca3",
-      "index": 1
-    },
-    {
-      "source": "2b8eae4c",
-      "sourceAnchor": 2,
-      "target": "5b7e9e8d",
-      "targetAnchor": 0,
-      "id": "3aba7f7a",
-      "index": 2
-    },
-    {
-      "source": "1b3d571a",
-      "sourceAnchor": 2,
-      "target": "276b4749",
-      "targetAnchor": 0,
-      "id": "e37d005b",
+      "id": "cd90fda5",
       "index": 3
     },
     {
-      "source": "5b7e9e8d",
+      "source": "5e321250",
       "sourceAnchor": 2,
-      "target": "2b8eae4c",
+      "target": "e1d333fb",
       "targetAnchor": 0,
-      "id": "461d23df",
-      "label": "",
-      "shape": "flow-polyline-round",
+      "id": "8cbf8466",
       "index": 4
     },
     {
-      "source": "0a85adf4",
+      "source": "e1d333fb",
       "sourceAnchor": 1,
-      "target": "cdfe63d1",
+      "target": "d2d570ed",
       "targetAnchor": 3,
-      "id": "bbe47033",
-      "index": 5
+      "id": "afa41584",
+      "label": "不是",
+      "shape": "flow-smooth",
+      "valve": "false",
+      "index": 6
     },
     {
-      "source": "2b8eae4c",
+      "source": "e1d333fb",
+      "sourceAnchor": 2,
+      "target": "f7d83499",
+      "targetAnchor": 0,
+      "id": "89934576",
+      "label": "是",
+      "shape": "flow-smooth",
+      "valve": "true",
+      "index": 8
+    },
+    {
+      "source": "f7d83499",
+      "sourceAnchor": 2,
+      "target": "85562ccf",
+      "targetAnchor": 0,
+      "id": "3133fba3",
+      "label": "可以",
+      "shape": "flow-smooth",
+      "valve": "true",
+      "index": 9
+    },
+    {
+      "source": "85562ccf",
+      "sourceAnchor": 2,
+      "target": "6d026497",
+      "targetAnchor": 0,
+      "id": "77426957",
+      "index": 12
+    },
+    {
+      "source": "f7d83499",
       "sourceAnchor": 1,
-      "target": "ab8c8e6b",
+      "target": "c6e5e924",
+      "id": "9134ca30",
       "targetAnchor": 3,
-      "id": "b9e6e1a0",
-      "index": 6
+      "label": "买不起",
+      "shape": "flow-smooth",
+      "valve": "false",
+      "index": 13
     }
   ]
 }

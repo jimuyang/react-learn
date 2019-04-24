@@ -4,6 +4,11 @@ const trim = (str, char) => {
     return str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
 }
 
+const test = (input) => {
+    console.log("start"); { input.amount = 100; { if (input.color == 'red' == false) { return `不买 颜色是${input.color}` } if (input.color == 'red' == true) { if (input.price <= input.amount == true) { input.amount = input.amount - input.price; { return input } } if (input.price <= input.amount == false) { return `买不起` } } } }
+}
+
+
 /**
  * 解析执行 将data转化为一个js函数运行
  * @param {flowData} flowData 
@@ -12,10 +17,11 @@ export const parseRun = (flowData) => {
     flowData = flowData || mockFlowData;
 
     const { nodes, edges } = flowData;
-    console.log(nodes);
-    console.log(edges);
+    // console.log(nodes);
+    // console.log(edges);
 
-    const startNode;
+    let nodeMap = {};
+    let startNode = null;
     for (let node of nodes) {
         nodeMap[node.id] = node;
         node.sources = [];
@@ -27,16 +33,18 @@ export const parseRun = (flowData) => {
     }
     for (let edge of edges) {
         // console.log(edge);
+        let sourceNode = nodeMap[edge.source];
+        let targetNode = nodeMap[edge.target];
         sourceNode.targets.push({
-            node: nodeMap[edge.target], targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+            node: targetNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
         });
         targetNode.sources.push({
-            node: nodeMap[edge.source], targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+            node: sourceNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
         });
     }
     console.log(nodeMap);
     if (!startNode) {
-        console.log('no start node found!'); 
+        console.log('no start node found!');
         return;
     }
 
@@ -48,14 +56,17 @@ export const parseRun = (flowData) => {
                 str += 'console.log("start");';
                 break;
             case 'output':
-                if (node.output.startsWith('"'))
-                    str += `return \`${trim(node.output, '"')}\``;
+                if (node.stream.startsWith('"'))
+                    str += `return \`${trim(node.stream, '"')}\``;
                 else
-                    str += `return ${node.output}`;
+                    str += `return ${node.stream}`;
                 break;
             case 'alias':
                 const aliases = node.aliases || [];
                 console.log(aliases);
+                break;
+            case 'command':
+                str += node.command;
                 break;
             default:
         }
@@ -65,13 +76,13 @@ export const parseRun = (flowData) => {
         for (let target of node.targets) {
             if (!target.valve) {
                 // 没有阀门限制的target添加到最后
-                defaultTarget = target; 
+                defaultTarget = target;
                 continue;
             }
-            str += `if (${node.stream} == ${target.valve}) {${travelNodeMap(target.node)}`;
+            str += `if ((${node.stream}) == ${target.valve}) {${travelNodeMap(target.node)}}`;
         }
         if (defaultTarget) {
-            str += `{${travelNodeMap(defaultTarget.node)}`;
+            str += `{${travelNodeMap(defaultTarget.node)}}`;
         }
         return str;
     }
