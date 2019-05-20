@@ -5,7 +5,23 @@ const trim = (str, char) => {
 }
 
 const test = (input) => {
-    console.log("start"); { input.amount = 100; { if (input.color == 'red' == false) { return `不买 颜色是${input.color}` } if (input.color == 'red' == true) { if (input.price <= input.amount == true) { input.amount = input.amount - input.price; { return input } } if (input.price <= input.amount == false) { return `买不起` } } } }
+    console.log("start"); {
+        input.amount = 100; {
+            if (input.color == 'red' == false) {
+                return `不买 颜色是${input.color}`
+            }
+            if (input.color == 'red' == true) {
+                if (input.price <= input.amount == true) {
+                    input.amount = input.amount - input.price; {
+                        return input
+                    }
+                }
+                if (input.price <= input.amount == false) {
+                    return `买不起`
+                }
+            }
+        }
+    }
 }
 
 
@@ -16,7 +32,10 @@ const test = (input) => {
 export const parseRun = (flowData) => {
     flowData = flowData || mockFlowData;
 
-    const { nodes, edges } = flowData;
+    const {
+        nodes,
+        edges
+    } = flowData;
     // console.log(nodes);
     // console.log(edges);
 
@@ -36,10 +55,16 @@ export const parseRun = (flowData) => {
         let sourceNode = nodeMap[edge.source];
         let targetNode = nodeMap[edge.target];
         sourceNode.targets.push({
-            node: targetNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+            node: targetNode,
+            targetAnchor: edge.targetAnchor,
+            sourceAnchor: edge.sourceAnchor,
+            valve: edge.valve
         });
         targetNode.sources.push({
-            node: sourceNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor, valve: edge.valve
+            node: sourceNode,
+            targetAnchor: edge.targetAnchor,
+            sourceAnchor: edge.sourceAnchor,
+            valve: edge.valve
         });
     }
     console.log(nodeMap);
@@ -49,24 +74,29 @@ export const parseRun = (flowData) => {
     }
 
     let travelNodeMap = (node) => {
-        const { category, stream } = node;
+        const {
+            category,
+            stream
+        } = node;
         let str = '';
         switch (category) {
             case 'start':
-                str += 'console.log("start");';
+                // str += 'console.log("start");';
                 break;
             case 'output':
                 if (node.stream.startsWith('"'))
-                    str += `return \`${trim(node.stream, '"')}\``;
+                    str += `return \`${trim(node.stream, '"')}\` ;`;
                 else
-                    str += `return ${node.stream}`;
+                    str += `return ${node.stream};`;
                 break;
             case 'alias':
                 const aliases = node.aliases || [];
                 console.log(aliases);
                 break;
             case 'command':
-                str += node.command;
+                if (node.command) {
+                    str += node.command;
+                }
                 break;
             default:
         }
@@ -79,96 +109,31 @@ export const parseRun = (flowData) => {
                 defaultTarget = target;
                 continue;
             }
-            str += `if ((${node.stream}) == ${target.valve}) {${travelNodeMap(target.node)}}`;
+            if (node.stream == 'true' && target.valve == 'true') {
+                str += `${travelNodeMap(target.node)}`;
+            } else if (node.stream == 'true') {
+                str += `if (${target.valve}) {${travelNodeMap(target.node)}}`;
+            } else if (target.valve == 'true') {
+                str += `if (${node.stream}) {${travelNodeMap(target.node)}}`;
+            } else {
+                str += `if ((${node.stream}) == (${target.valve})) {${travelNodeMap(target.node)}}`;
+            }
         }
         if (defaultTarget) {
-            str += `{${travelNodeMap(defaultTarget.node)}}`;
+            str += `${travelNodeMap(defaultTarget.node)}`;
         }
         return str;
     }
 
-    console.log(travelNodeMap(startNode));
+    console.log("生成JS逻辑:", travelNodeMap(startNode));
 
     let rule = new Function('input', travelNodeMap(startNode));
-    console.log(startNode.input);
+    let input = JSON.parse(startNode.input);
+    console.log("输入:", input);
     // run
-    console.log(rule(JSON.parse(startNode.input)));
+    console.log("输出:", rule(input));
 }
 
-/**
- * 解析执行 将data转化为一个js函数运行
- * @param {flowData} flowData 
- */
-export const parseRun1 = (flowData) => {
-    flowData = flowData || mockFlowData;
-    const { nodes, edges } = flowData;
-
-    let startNode;
-    let nodeMap = {};
-
-    for (let node of nodes) {
-        nodeMap[node.id] = node;
-        node.sources = [];
-        node.targets = [];
-        // console.log(node);
-        if (node.category === 'start') {
-            startNode = node;
-        }
-    }
-    for (let edge of edges) {
-        // console.log(edge);
-        let sourceNode = nodeMap[edge.source];
-        let targetNode = nodeMap[edge.target];
-
-        sourceNode.targets.push({ node: targetNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor });
-        targetNode.sources.push({ node: sourceNode, targetAnchor: edge.targetAnchor, sourceAnchor: edge.sourceAnchor });
-    }
-
-    console.log(nodeMap);
-    if (!startNode) {
-        console.log('no start node found!');
-        return;
-    }
-
-    let travelMap = (node) => {
-        let str = '';
-        switch (node.category) {
-            case 'start':
-                str += 'console.log("start");';
-                for (let target of node.targets) {
-                    str += travelMap(target.node)
-                }
-                break;
-            case 'decision':
-                const condition = node.expression;
-                const inAnchor = node.sources[0].targetAnchor;
-                const trueOutAnchor = inAnchor >= 2 ? inAnchor - 2 : inAnchor + 2;
-                // debugger
-                const whenTrue = travelMap(node.targets.find(t => t.sourceAnchor === trueOutAnchor).node);
-                const whenFalse = travelMap(node.targets.find(t => t.sourceAnchor !== trueOutAnchor).node);
-                str += `if (${condition}) {${whenTrue}} else {${whenFalse}}`;
-                break;
-            case 'output':
-                // str += `return \`${node.output}\``;
-                if (node.output.startsWith('"')) {
-                    str += `return \`${trim(node.output, '"')}\``;
-                } else {
-                    str += `return ${node.output}`;
-                }
-                break;
-            default:
-        }
-        return str;
-    };
-    console.log(travelMap(startNode));
-
-    let rule = new Function('input', travelMap(startNode));
-    console.log(startNode.input);
-    // debugger
-
-    // run
-    console.log(rule(JSON.parse(startNode.input)));
-}
 
 /**
  * 流执行 数据将会真实的在flow中流动
