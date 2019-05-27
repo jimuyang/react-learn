@@ -109,15 +109,14 @@ export const parseRun = (flowData) => {
                 defaultTarget = target;
                 continue;
             }
-            if (node.stream == 'true' && target.valve == 'true') {
+            if (node.stream == 'true' && target.valve == 'true')
                 str += `${travelNodeMap(target.node)}`;
-            } else if (node.stream == 'true') {
+            else if (node.stream == 'true')
                 str += `if (${target.valve}) {${travelNodeMap(target.node)}}`;
-            } else if (target.valve == 'true') {
+            else if (target.valve == 'true')
                 str += `if (${node.stream}) {${travelNodeMap(target.node)}}`;
-            } else {
+            else
                 str += `if ((${node.stream}) == (${target.valve})) {${travelNodeMap(target.node)}}`;
-            }
         }
         if (defaultTarget) {
             str += `${travelNodeMap(defaultTarget.node)}`;

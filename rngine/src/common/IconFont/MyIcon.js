@@ -1,7 +1,7 @@
 import { Icon } from 'antd';
 
 const MyIcon = Icon.createFromIconfontCN({
-    scriptUrl: 'https://at.alicdn.com/t/font_1137671_n4b5czf3n7a.js',
+    scriptUrl: '//at.alicdn.com/t/font_1137671_imz65kfl1br.js',
 });
 
 export default MyIcon;

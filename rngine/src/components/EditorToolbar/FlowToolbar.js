@@ -2,12 +2,17 @@ import React from 'react';
 import { Divider } from 'antd';
 import { Toolbar } from 'gg-editor';
 import ToolbarButton from './ToolbarButton';
-import SaveButton from './SaveButton';
+import SaveButton from './button/Save';
+import SeeButton from './button/See';
+import RunButton from './button/Run';
+import PublishButton from './button/Publish';
+import SettingButton from './button/Setting';
+
 import styles from './index.less';
 
 const FlowToolbar = () => {
   return (
-    <div style={{display: "flex", alignItems: "center"}}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       <Toolbar className={styles.toolbar}>
         <ToolbarButton command="undo" />
         <ToolbarButton command="redo" />
@@ -29,7 +34,13 @@ const FlowToolbar = () => {
         <ToolbarButton command="unGroup" icon="ungroup" text="Ungroup" />
         <Divider type="vertical" />
       </Toolbar>
-      <SaveButton />
+      <div className={styles.toolbar}>
+        <SaveButton />
+        <SeeButton />
+        <PublishButton />
+        <RunButton />
+        <SettingButton />
+      </div>
     </div>
   );
 };
