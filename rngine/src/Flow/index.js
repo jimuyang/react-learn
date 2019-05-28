@@ -7,15 +7,22 @@ import { FlowToolbar } from '../components/EditorToolbar';
 import { FlowItemPanel } from '../components/EditorItemPanel';
 import { FlowDetailPanel } from '../components/EditorDetailPanel';
 import styles from './index.less';
-import flowData from '../mock/flowData.json';
-import SuggestFlow from '../mock/suggestFlow.json';
+
+// import flowData from '../mock/flowData.json';
+import mockSuggestFlow from '../mock/suggestFlow.json';
+import LocalStorageAPI from '../api/UseLocalStorage';
+
+let API = LocalStorageAPI;
+let flowData = API.loadFlow() || mockSuggestFlow;
+console.log(flowData);
+
 
 const FlowPage = () => {
   return (
     <GGEditor className={styles.editor}>
       <Row type="flex" className={styles.editorHd}>
         <Col span={24}>
-          <FlowToolbar />
+          <FlowToolbar api={API}/>
         </Col>
       </Row>
       <Row type="flex" className={styles.editorBd}>
@@ -23,7 +30,7 @@ const FlowPage = () => {
           <FlowItemPanel />
         </Col>
         <Col span={12} className={styles.editorContent}>
-          <Flow className={styles.flow} data={SuggestFlow} />
+          <Flow className={styles.flow} data={flowData} />
         </Col>
         <Col span={8} className={styles.editorSidebar}>
           <FlowDetailPanel />

@@ -14,7 +14,9 @@ class SaveButton extends React.Component {
         let data = propsAPI.save();
         // console.log(data);
         console.log(JSON.stringify(data));
-        parseRun(data);
+        // parseRun(data);
+        console.log(this.props);
+        this.props.save(data);
     }
 
     render() {
