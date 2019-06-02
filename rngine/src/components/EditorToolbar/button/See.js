@@ -8,12 +8,7 @@ import styles from '../index.less';
 class SeeButton extends React.Component {
 
     handleClick = (e) => {
-        // // console.log(e);
-        // const { propsAPI } = this.props;
-        // let data = propsAPI.save();
-        // // console.log(data);
-        // console.log(JSON.stringify(data));
-        // parseRun(data);
+        this.props.click();
     }
 
     render() {
@@ -24,7 +19,7 @@ class SeeButton extends React.Component {
                     title="see"
                     placement="bottom"
                     overlayClassName={styles.tooltip}>
-                    <MyIcon type="iconPro" />
+                    <MyIcon type="iconsee" />
                 </Tooltip>
             </div>
         );

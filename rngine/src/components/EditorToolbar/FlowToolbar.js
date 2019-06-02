@@ -11,7 +11,7 @@ import SettingButton from './button/Setting';
 import styles from './index.less';
 
 const FlowToolbar = (props) => {
-  const API = props.api;
+  const { api, util } = props;
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <Toolbar className={styles.toolbar}>
@@ -36,8 +36,8 @@ const FlowToolbar = (props) => {
         <Divider type="vertical" />
       </Toolbar>
       <div className={styles.toolbar}>
-        <SaveButton save={API.saveFlow} />
-        <SeeButton />
+        <SaveButton save={api.saveFlow} />
+        <SeeButton click={util.hideDetail}/>
         <PublishButton />
         <RunButton />
         <SettingButton />
