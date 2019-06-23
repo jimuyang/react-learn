@@ -19,14 +19,14 @@ let flowData = API.loadFlow() || mockSuggestFlow;
 const grid = {
   default: {
     left: 4,
-    content: 16,
-    right: 4
+    content: 12,
+    right: 8
   },
-  // hideDetail: {
-  //   left: 4,
-  //   content: 20,
-  //   right: 0
-  // }
+  hideDetail: {
+    left: 4,
+    content: 20,
+    right: 0
+  }
 }
 
 class FlowPage extends React.Component {
@@ -39,21 +39,21 @@ class FlowPage extends React.Component {
   }
 
   render() {
-    // const util = {
-
-    //   hideDetail: () => {
-    //     if (!this.state.hideDetail) {
-    //       this.setState({ hideDetail: true })
-    //     }
-    //   },
-    //   showDetail: () => {
-    //     if (this.state.hideDetail) {
-    //       this.setState({ hideDetail: false });
-    //     }
-    //   }
-    // }
+    const util = {
+      
+      hideDetail: () => {
+        if (!this.state.hideDetail) {
+          this.setState({ hideDetail: true })
+        }
+      },
+      showDetail: () => {
+        if (this.state.hideDetail) {
+          this.setState({ hideDetail: false });
+        }
+      }
+    }
     // const layout = this.state.hideDetail ? grid.hideDetail : grid.default;
-    const layout = grid.default;
+    const layout = grid.default; 
     return (
       <GGEditor className={styles.editor}>
         <Row type="flex" className={styles.editorHd}>
@@ -69,7 +69,7 @@ class FlowPage extends React.Component {
             <Flow className={styles.flow} />
           </Col>
           <Col span={layout.right} className={styles.editorSidebar}>
-            <FlowDetailPanel /*util={util}*/ />
+            <FlowDetailPanel util={util} />
             <EditorMinimap />
           </Col>
         </Row>
