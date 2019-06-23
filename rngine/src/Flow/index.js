@@ -14,70 +14,32 @@ import LocalStorageAPI from '../api/UseLocalStorage';
 
 let API = LocalStorageAPI;
 let flowData = API.loadFlow() || mockSuggestFlow;
-// console.log(flowData);
+console.log(flowData);
 
-const grid = {
-  default: {
-    left: 4,
-    content: 12,
-    right: 8
-  },
-  hideDetail: {
-    left: 4,
-    content: 20,
-    right: 0
-  }
-}
 
-class FlowPage extends React.Component {
-
-  constructor() {
-    super();
-    this.state = {
-      hideDetail: true
-    }
-  }
-
-  render() {
-    const util = {
-      
-      hideDetail: () => {
-        if (!this.state.hideDetail) {
-          this.setState({ hideDetail: true })
-        }
-      },
-      showDetail: () => {
-        if (this.state.hideDetail) {
-          this.setState({ hideDetail: false });
-        }
-      }
-    }
-    // const layout = this.state.hideDetail ? grid.hideDetail : grid.default;
-    const layout = grid.default; 
-    return (
-      <GGEditor className={styles.editor}>
-        <Row type="flex" className={styles.editorHd}>
-          <Col span={24}>
-            <FlowToolbar api={API} util={util} />
-          </Col>
-        </Row>
-        <Row type="flex" className={styles.editorBd}>
-          <Col span={layout.left} className={styles.editorSidebar}>
-            <FlowItemPanel />
-          </Col>
-          <Col span={layout.content} className={styles.editorContent}>
-            <Flow className={styles.flow} />
-          </Col>
-          <Col span={layout.right} className={styles.editorSidebar}>
-            <FlowDetailPanel util={util} />
-            <EditorMinimap />
-          </Col>
-        </Row>
-        <FlowContextMenu />
-      </GGEditor>
-    );
-  }
-
+const FlowPage = () => {
+  return (
+    <GGEditor className={styles.editor}>
+      <Row type="flex" className={styles.editorHd}>
+        <Col span={24}>
+          <FlowToolbar api={API}/>
+        </Col>
+      </Row>
+      <Row type="flex" className={styles.editorBd}>
+        <Col span={4} className={styles.editorSidebar}>
+          <FlowItemPanel />
+        </Col>
+        <Col span={12} className={styles.editorContent}>
+          <Flow className={styles.flow} data={flowData} />
+        </Col>
+        <Col span={8} className={styles.editorSidebar}>
+          <FlowDetailPanel />
+          <EditorMinimap />
+        </Col>
+      </Row>
+      <FlowContextMenu />
+    </GGEditor>
+  );
 };
 
 export default FlowPage;

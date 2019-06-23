@@ -4,17 +4,17 @@ import { NodePanel, EdgePanel, GroupPanel, MultiPanel, CanvasPanel, DetailPanel 
 import DetailForm from './DetailForm';
 import styles from './index.less';
 
-const FlowDetailPanel = (props) => {
+const FlowDetailPanel = () => {
   return (
     <DetailPanel className={styles.detailPanel}>
       <NodePanel>
-        <DetailForm type="node" util={props.util} />
+        <DetailForm type="node" />
       </NodePanel>
       <EdgePanel>
-        <DetailForm type="edge" util={props.util} />
+        <DetailForm type="edge" />
       </EdgePanel>
       <GroupPanel>
-        <DetailForm type="group" util={props.util} />
+        <DetailForm type="group" />
       </GroupPanel>
       <MultiPanel>
         <Card type="inner" size="small" title="Multi Select" bordered={false} />

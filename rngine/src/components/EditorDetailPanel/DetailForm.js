@@ -24,10 +24,8 @@ class DetailForm extends React.Component {
   }
 
   render() {
-    const { type, util, propsAPI} = this.props;
-    // setTimeout(() => util.showDetail());
-    // console.log(propsAPI);
-
+    const { type } = this.props;
+    // console.log(this.props);
     if (!this.item) {
       return null;
     }
@@ -51,7 +49,7 @@ class DetailForm extends React.Component {
     const { getSelected, executeCommand, update } = propsAPI;
     setTimeout(() => {
       form.validateFieldsAndScroll((err, values) => {
-        // console.log(values);
+        console.log(values);
         if (err || !this.item) {
           return;
         }
@@ -101,14 +99,7 @@ class DetailForm extends React.Component {
   };
 
   renderNodeDetail = () => {
-    const { form, propsAPI } = this.props;
-    console.log(this.item);
-
-    // const { executeCommand, update } = propsAPI;
-    // executeCommand(() => {
-    //   update(this.item, { color: 'green' });
-    // });
-
+    const { form } = this.props;
     const { category } = this.item.getModel();
     // debugger
     switch (category) {
